@@ -1,4 +1,4 @@
-let board_values = [7,5,6,1,4,3,2,-1,0];
+let board_values = [7,5,6,1,4,3,2,0,-1];
 function handleClick(num,board_values){
   const num_idx = board_values.indexOf(num);
   const num_row = parseInt(num_idx/3);
@@ -128,26 +128,10 @@ function thinking(board_values,available,road,history) {
   //     minItemIndex = index
   //   }
   // })
-  const sortedAvailable = available.sort((a, b) => {
+  const sortedAvailable =available.sort((a, b) => {
     const aKeyLength = a.key.split(',').length;
     const bKeyLength = b.key.split(',').length;
-    if (a.cost === b.cost) {
-      if (aKeyLength === bKeyLength) {
-        return 0;
-      }
-
-      if (aKeyLength > bKeyLength) {
-        return 1;
-      }
-
-      return -1;
-    }
-
-    if (a.cost > b.cost) {
-      return 1;
-    }
-
-    return -1;
+    return String(a.cost).localeCompare(String(b.cost)) || aKeyLength - bKeyLength
   })
   // select
   const newItem = sortedAvailable[0];

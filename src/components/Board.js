@@ -146,7 +146,7 @@ export default function Board() {
         if (!(history.map(item =>JSON.stringify(item)).includes(JSON.stringify(handleClick(item,board_values))))){
           available.push({
             key:!!road?road+","+item:item+"",
-            cost: road.split(",").length + howMuchUntilEnd(board_values)*19,
+            cost: road.split(",").length + howMuchUntilEnd(board_values) *2 ,
             new_board_values:handleClick(item,board_values)
           })
         }
@@ -154,18 +154,23 @@ export default function Board() {
       }
     });
     // select
-    let min = 9999999999999999999999;
-    let minItemIndex = 0;
-    available.forEach((item,index) => {
-      if (min >item.cost+item.key.split(",").length){
-        min =item.cost
-        minItemIndex = index
-      }
+    // let min = 9999999999999999999999;
+    // let minItemIndex = 0;
+    // available.forEach((item,index) => {
+    //   if (min >item.cost){
+    //     min =item.cost
+    //     minItemIndex = index
+    //   }
+    // })
+    const sortedAvailable =available.sort((a, b) => {
+      const aKeyLength = a.key.split(',').length;
+      const bKeyLength = b.key.split(',').length;
+      return String(a.cost).localeCompare(String(b.cost)) || aKeyLength - bKeyLength
     })
     // select
-    const newItem = available[minItemIndex]
+    const newItem = sortedAvailable[0]
     history.push(newItem.new_board_values)
-    available.splice(minItemIndex,1)
+    available.splice(0,1)
     thinking(newItem.new_board_values,available,newItem.key,history)
   }
   function handleSolveClick() {
